@@ -1,0 +1,41 @@
+version: 2
+
+run_spec: &run_spec
+  steps:
+    - checkout
+    - run: bundle install
+    - run:
+        name: RSpec
+        command: bundle exec rspec --profile 10 --format progress
+
+jobs:
+  build_ruby2_7:
+    <<: *run_spec
+    docker:
+      - image: circleci/ruby:2.7
+  build_ruby2_6:
+    <<: *run_spec
+    docker:
+      - image: circleci/ruby:2.6
+  build_ruby2_5:
+    <<: *run_spec
+    docker:
+      - image: circleci/ruby:2.5
+  build_ruby2_4:
+    <<: *run_spec
+    docker:
+      - image: circleci/ruby:2.4
+  build_ruby2_3:
+    <<: *run_spec
+    docker:
+      - image: circleci/ruby:2.3
+
+workflows:
+  version: 2
+  build_ruby_versions:
+    jobs:
+      - build_ruby2_7
+      - build_ruby2_6
+      - build_ruby2_5
+      - build_ruby2_4
+      - build_ruby2_3
